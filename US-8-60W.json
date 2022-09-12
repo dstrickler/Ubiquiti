@@ -1,0 +1,286 @@
+{
+    "zabbix_export": {
+        "version": "6.2",
+        "date": "2022-09-06T20:01:54Z",
+        "template_groups": [
+            {
+                "uuid": "36bff6c29af64692839d077febfc7079",
+                "name": "Templates/Network devices"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "f1f0e408bf0248099bd3e03c4e546c3e",
+                "template": "Ubiquiti Unifi Switch 8 POE-60W",
+                "name": "Ubiquiti Unifi Switch 8 POE-60W",
+                "description": "Model US-8-60W.\nThere are no temperature sensors or fans in this unit, and thus you won't find Items for them in this template.\n\nTemplate by Dave Strickler",
+                "groups": [
+                    {
+                        "name": "Templates/Network devices"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "dddf39f191164f578539e842f18bfe65",
+                        "name": "ICMP ping",
+                        "type": "SIMPLE",
+                        "key": "icmpping",
+                        "history": "1w",
+                        "valuemap": {
+                            "name": "Service state"
+                        },
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "health"
+                            },
+                            {
+                                "tag": "component",
+                                "value": "network"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "2a6711992f354095b056b628be78022c",
+                                "expression": "max(/Ubiquiti Unifi Switch 8 POE-60W/icmpping,#3)=0",
+                                "name": "Unavailable by ICMP ping",
+                                "priority": "HIGH",
+                                "description": "Last three attempts returned timeout.  Please check device connectivity.",
+                                "tags": [
+                                    {
+                                        "tag": "scope",
+                                        "value": "availability"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e8cf77c1c6cf4b1c880a34e35017a4d2",
+                        "name": "Uptime",
+                        "type": "SNMP_AGENT",
+                        "snmp_oid": "1.3.6.1.2.1.1.3.0",
+                        "key": "dws_system_uptime",
+                        "units": "uptime",
+                        "description": "MIB: IF-MIB\nThe current operational state of the interface.\n- The testing(3) state indicates that no operational packet scan be passed\n- If ifAdminStatus is down(2) then ifOperStatus should be down(2)\n- If ifAdminStatus is changed to up(1) then ifOperStatus should change to up(1) if the interface is ready to transmit and receive network traffic\n- It should change todormant(5) if the interface is waiting for external actions (such as a serial line waiting for an incoming connection)\n- It should remain in the down(2) state if and only if there is a fault that prevents it from going to the up(1) state\n- It should remain in the notPresent(6) state if the interface has missing(typically, hardware) components.",
+                        "preprocessing": [
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "0.01"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "system"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7692f0d0dafb4a4fbe6088317d69da65",
+                        "name": "Port: 1 - Bits received",
+                        "type": "SNMP_AGENT",
+                        "snmp_oid": "1.3.6.1.2.1.2.2.1.10.1",
+                        "key": "Interface_port_1_bits_received",
+                        "units": "bps",
+                        "description": "MIB: IF-MIB\nThe total number of octets received on the interface,including framing characters. Discontinuities in the value of this counter can occurat re-initialization of the management system, and atother times as indicated by the value of ifCounterDiscontinuityTime.",
+                        "preprocessing": [
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "8"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "network"
+                            },
+                            {
+                                "tag": "description",
+                                "value": "{#IFALIAS}"
+                            },
+                            {
+                                "tag": "interface",
+                                "value": "Slot: 0 Port: 1 Gigabit - Level"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "412265f055d64bdeab0501dc32881cec",
+                        "name": "Port: 1 - Bits sent",
+                        "type": "SNMP_AGENT",
+                        "snmp_oid": "1.3.6.1.2.1.2.2.1.16.1",
+                        "key": "Interface_port_1_bits_sent",
+                        "units": "bps",
+                        "description": "MIB: IF-MIB\nThe total number of octets transmitted out of the interface, including framing characters. Discontinuities in the value of this counter can occurat re-initialization of the management system, and at other times as indicated by the value of ifCounterDiscontinuityTime.",
+                        "preprocessing": [
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "8"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "network"
+                            },
+                            {
+                                "tag": "description",
+                                "value": "{#IFALIAS}"
+                            },
+                            {
+                                "tag": "interface",
+                                "value": "Slot: 0 Port: 1 Gigabit - Level"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "50127e76c4594714a0434fa3b8bba14f",
+                        "name": "Port: 1 - Cnnnection Speed",
+                        "type": "SNMP_AGENT",
+                        "snmp_oid": "1.3.6.1.2.1.2.2.1.5.1",
+                        "key": "Interface_port_1_connection_speed",
+                        "units": "bps",
+                        "description": "MIB: IF-MIB\nAn estimate of the interface's current bandwidth in bits per second.\nFor interfaces which do not vary in bandwidth or for those where no accurate estimation can be made,\nthis object should contain the nominal bandwidth.\nIf the bandwidth of the interface is greater than the maximum value reportable by this object then\nthis object should report its maximum value (4,294,967,295) and ifHighSpeed must be used to report the interace's speed.\nFor a sub-layer which has no concept of bandwidth, this object should be zero.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "network"
+                            },
+                            {
+                                "tag": "description",
+                                "value": "{#IFALIAS}"
+                            },
+                            {
+                                "tag": "interface",
+                                "value": "Slot: 0 Port: 1 Gigabit - Level"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "584eebb28b2b41c3bb0b885f2d88830b",
+                        "name": "Port: 1 - Operational status",
+                        "type": "SNMP_AGENT",
+                        "snmp_oid": "1.3.6.1.2.1.2.2.1.8.1",
+                        "key": "Interface_port_1_operation_status",
+                        "delay": "15s",
+                        "description": "MIB: IF-MIB\nThe current operational state of the interface.\n- The testing(3) state indicates that no operational packet scan be passed\n- If ifAdminStatus is down(2) then ifOperStatus should be down(2)\n- If ifAdminStatus is changed to up(1) then ifOperStatus should change to up(1) if the interface is ready to transmit and receive network traffic\n- It should change todormant(5) if the interface is waiting for external actions (such as a serial line waiting for an incoming connection)\n- It should remain in the down(2) state if and only if there is a fault that prevents it from going to the up(1) state\n- It should remain in the notPresent(6) state if the interface has missing(typically, hardware) components.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "network"
+                            },
+                            {
+                                "tag": "description",
+                                "value": "{#IFALIAS}"
+                            },
+                            {
+                                "tag": "interface",
+                                "value": "Slot: 0 Port: 1 Gigabit - Level"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "d7db3c714db8463a95772a6864ebfd96",
+                                "expression": "last(/Ubiquiti Unifi Switch 8 POE-60W/Interface_port_1_operation_status,#1)=0",
+                                "name": "Port 1 Operational Status DOWN",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0ede3a6edb934695a07f8185b47167d2",
+                        "name": "System Name",
+                        "type": "SNMP_AGENT",
+                        "snmp_oid": "iso.3.6.1.2.1.1.5.0",
+                        "key": "system_name",
+                        "delay": "5m",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "description": "Device name"
+                    },
+                    {
+                        "uuid": "3469548727ec477b8ce91c7f159ba836",
+                        "name": "System Next Hop",
+                        "type": "SNMP_AGENT",
+                        "snmp_oid": "iso.3.6.1.2.1.4.21.1.7.0.0.0.0",
+                        "key": "system_next_hop",
+                        "delay": "10s",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "description": "Next hop IP address"
+                    },
+                    {
+                        "uuid": "18833c69db66426c9b18a40ed60e690e",
+                        "name": "System Version",
+                        "type": "SNMP_AGENT",
+                        "snmp_oid": "iso.3.6.1.2.1.47.1.1.1.1.10.1",
+                        "key": "system_version",
+                        "delay": "5m",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "description": "Firmware version"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "the_tag",
+                        "value": "DWS"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$THE_MACRO_NAME}",
+                        "value": "DWS",
+                        "description": "test"
+                    }
+                ],
+                "valuemaps": [
+                    {
+                        "uuid": "0d86898e1a1346adaa7eac2000effc15",
+                        "name": "test_mapping",
+                        "mappings": [
+                            {
+                                "value": "DWS",
+                                "newvalue": "DWS"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "dddbcf64fddb4f4faf3bfb039a36e0e4",
+                        "name": "Service state",
+                        "mappings": [
+                            {
+                                "value": "0",
+                                "newvalue": "Down"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "Up"
+                            }
+                        ]
+                    }
+                ]
+
+            }
+        ]
+    }
+}
